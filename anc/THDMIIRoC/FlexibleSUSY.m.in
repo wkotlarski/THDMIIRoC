@@ -1,0 +1,152 @@
+
+FSModelName = "@CLASSNAME@";
+FSEigenstates = SARAH`EWSB;
+FSDefaultSARAHModel = "THDM-II";
+
+OnlyLowEnergyFlexibleSUSY = False;
+
+(* input parameters *)
+
+MINPAR = {
+    {1, TanBeta},
+    {2, mAIN},
+    {3, ptIN},
+    {4, p1IN},
+    {5, p2IN},
+    {6, p3IN},
+    {7, p4IN},
+    {8, p5IN},
+    {9, p6IN},
+    {10, p7IN},
+    {11, qtIN},
+    {12, q1IN},
+    {13, q2IN},
+    {14, q3IN},
+    {15, q4IN},
+    {16, q5IN},
+    {17, q6IN},
+    {18, q7IN},
+    {19, rtIN},
+    {20, r1IN},
+    {21, r2IN},
+    {22, r3IN},
+    {23, r4IN},
+    {24, r5IN},
+    {25, r6IN},
+    {26, r7IN}
+};
+
+EXTPAR = {
+    {0, Qin},
+    {1, Qout}
+};
+
+EWSBOutputParameters = { M112, M222 };
+
+HighScale = Qin;
+HighScaleFirstGuess = Qin;
+
+HighScaleInput = {
+    {Yu[3,3], ptIN*g3 + qtIN*g2 + rtIN*GUTNormalization[g1]*g1},
+    {Lambda1, 1/2*(p1IN*g3^2 + q1IN*g2^2 + r1IN*(GUTNormalization[g1]*g1)^2)},
+    {Lambda2, 1/2*(p2IN*g3^2 + q2IN*g2^2 + r2IN*(GUTNormalization[g1]*g1)^2)},
+    {Lambda3, p3IN*g3^2 + q3IN*g2^2 + r3IN*(GUTNormalization[g1]*g1)^2},
+    {Lambda4, p4IN*g3^2 + q4IN*g2^2 + r4IN*(GUTNormalization[g1]*g1)^2},
+    {Lambda5, p5IN*g3^2 + q5IN*g2^2 + r5IN*(GUTNormalization[g1]*g1)^2},
+    {Lambda6, p6IN*g3^2 + q6IN*g2^2 + r6IN*(GUTNormalization[g1]*g1)^2},
+    {Lambda7, p7IN*g3^2 + q7IN*g2^2 + r7IN*(GUTNormalization[g1]*g1)^2}
+};
+
+SUSYScale = Qout;
+SUSYScaleFirstGuess = Qout;
+SUSYScaleInput = {
+    {M122, (Lambda6*v1^2)/2 + Lambda5*v1*v2 + (Lambda7*v2^2)/2 + (mAIN^2*v1*v2)/(v1^2 + v2^2)}
+};
+(*
+InitialGuessAtSUSYScale = {
+   {M122, 20000}
+};
+*)
+
+
+LowScale = LowEnergyConstant[MZ];
+
+LowScaleFirstGuess = LowEnergyConstant[MZ];
+
+LowScaleInput = {
+   {v1, 2 MZMSbar / Sqrt[GUTNormalization[g1]^2 g1^2 + g2^2] Cos[ArcTan[TanBeta]]},
+   {v2, 2 MZMSbar / Sqrt[GUTNormalization[g1]^2 g1^2 + g2^2] Sin[ArcTan[TanBeta]]},
+   {Yu[1,1],  Sqrt[2] upQuarksDRbar[1,1] / v2},
+   {Yu[2,2],  Sqrt[2] upQuarksDRbar[2,2] / v2},
+   {Yd, Automatic},
+   {Ye, Automatic}
+};
+
+InitialGuessAtLowScale = {
+   {v1, LowEnergyConstant[vev] Cos[ArcTan[TanBeta]]},
+   {v2, LowEnergyConstant[vev] Sin[ArcTan[TanBeta]]},
+   {Yu, Automatic},
+   {Yd, Automatic},
+   {Ye, Automatic}
+};
+
+DefaultPoleMassPrecision = MediumPrecision;
+HighPoleMassPrecision    = {hh, Ah, Hm};
+MediumPoleMassPrecision  = {};
+LowPoleMassPrecision     = {};
+
+ExtraSLHAOutputBlocks = {
+   {FlexibleSUSYLowEnergy, {
+         {21, FlexibleSUSYObservable`AMM[Fe[2]]},
+         {22, FlexibleSUSYObservable`AMMUncertainty[Fe[2]]},
+         {26, FlexibleSUSYObservable`aMuonGM2Calc},
+         {27, FlexibleSUSYObservable`aMuonGM2CalcUncertainty}
+      }
+   },
+   {HighScaleParams, 10^7, {
+	{1, Lambda1},
+	{2, Lambda2},
+	{3, Lambda3},
+	{4, Lambda4},
+	{5, Lambda5},
+	{6, Lambda6},
+	{7, Lambda7},
+	{8, Yu[3,3]}
+   }},
+   {LowScaleParams, 173., {
+	{1, Lambda1},
+	{2, Lambda2},
+	{3, Lambda3},
+	{4, Lambda4},
+	{5, Lambda5},
+	{6, Lambda6},
+	{7, Lambda7},
+	{8, Yu[3,3]}
+   }}
+};
+
+(* input parameters for GM2Calc, see [arxiv:2110.13238] *)
+FSGM2CalcInput = {
+    yukawaType -> 2,
+    lambda1 -> 2 Lambda1,
+    lambda2 -> 2 Lambda2,
+    lambda3 -> Lambda3,
+    lambda4 -> Lambda4,
+    lambda5 -> Lambda5,
+    lambda6 -> Lambda6,
+    lambda7 -> Lambda7,
+    tanBeta -> v2 / v1,
+    m122 -> M122,
+    zetau -> 0,
+    zetad -> 0,
+    zetal -> 0,
+    deltau -> ZEROMATRIX[3,3],
+    deltad -> ZEROMATRIX[3,3],
+    deltal -> ZEROMATRIX[3,3],
+    piu -> ZEROMATRIX[3,3],
+    pid -> ZEROMATRIX[3,3],
+    pil -> ZEROMATRIX[3,3]
+};
+
+FSCalculateDecays = True;
+FSDecayParticles = {hh, Ah, Hm, Fu};
