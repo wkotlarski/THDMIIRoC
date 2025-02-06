@@ -44,7 +44,7 @@ EWSBOutputParameters = {M112, M222};
 HighScaleFirstGuess = Qin;
 HighScale = Qin;
 HighScaleInput = {
-    {Yu[3,3], ptIN*g3 + qtIN*g2 + rtIN*GUTNormalization[g1]*g1},
+    {Yu[3,3], -(ptIN*g3 + qtIN*g2 + rtIN*GUTNormalization[g1]*g1)},
     {Lambda1, 1/2*(p1IN*g3^2 + q1IN*g2^2 + r1IN*(GUTNormalization[g1]*g1)^2)},
     {Lambda2, 1/2*(p2IN*g3^2 + q2IN*g2^2 + r2IN*(GUTNormalization[g1]*g1)^2)},
     {Lambda3, p3IN*g3^2 + q3IN*g2^2 + r3IN*(GUTNormalization[g1]*g1)^2},
@@ -65,8 +65,15 @@ LowScale = LowEnergyConstant[MZ];
 LowScaleInput = {
    {v1, 2 MZMSbar / Sqrt[GUTNormalization[g1]^2 g1^2 + g2^2] Cos[ArcTan[TanBeta]]},
    {v2, 2 MZMSbar / Sqrt[GUTNormalization[g1]^2 g1^2 + g2^2] Sin[ArcTan[TanBeta]]},
-   {Yu[1,1],  Sqrt[2] upQuarksDRbar[1,1] / v2},
-   {Yu[2,2],  Sqrt[2] upQuarksDRbar[2,2] / v2},
+(*
+The sign below can be checked by running
+<< SARAH`
+SARAH`SARAH[InputDirectories] = { "sarah" };
+Start["THDM-II"];
+MassMatrix[Fu]
+*)
+   {Yu[1,1],  -Sqrt[2] upQuarksDRbar[1,1] / v2},
+   {Yu[2,2],  -Sqrt[2] upQuarksDRbar[2,2] / v2},
    {Yd, Automatic},
    {Ye, Automatic}
 };
