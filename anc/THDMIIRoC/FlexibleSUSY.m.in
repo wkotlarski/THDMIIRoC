@@ -72,8 +72,14 @@ SARAH`SARAH[InputDirectories] = { "sarah" };
 Start["THDM-II"];
 MassMatrix[Fu]
 *)
-   {Yu[1,1],  -Sqrt[2] upQuarksDRbar[1,1] / v2},
-   {Yu[2,2],  -Sqrt[2] upQuarksDRbar[2,2] / v2},
+   {Yu[1,1], -Sqrt[2] upQuarksDRbar[1,1] / v2},
+   {Yu[1,2], 0},
+   {Yu[1,3], 0},
+   {Yu[2,1], 0},
+   {Yu[2,2], -Sqrt[2] upQuarksDRbar[2,2] / v2},
+   {Yu[2,3], 0},
+   {Yu[3,1], 0},
+   {Yu[3,2], 0},
    {Yd, Automatic},
    {Ye, Automatic}
 };
